@@ -38,11 +38,11 @@ class ChallengeFiveDT(SeleniumBaseTest):
 
     def test_hw1(self):
         self.go_to("https://www.doterra.com/US/en/using-essential-oils")
-        self._check_urls("//div[@id='content_body']")
+        self._check_urls(xpath_prefix="//div[@id='content_body']", url_prefix="https://www.doterra.com")
 
     def test_hw2(self):
         self.go_to("https://www.doterra.com/US/en/using-essential-oils")
-        self._check_urls("//*[@id='footer']")
+        self._check_urls(xpath_prefix="//*[@id='footer']", url_prefix="https://www.doterra.com")
 
     def test_hw3(self):
         pass
@@ -52,8 +52,8 @@ class ChallengeFiveDT(SeleniumBaseTest):
         print(type(driver))
         self.assertIn("WebDriver", str(type(driver)))
 
-    def _check_urls(self, constraining_div):
-        xpath = constraining_div + "//a"
+    def _check_urls(self, xpath_prefix="", url_prefix="https"):
+        xpath = xpath_prefix + "//a"
         print ("check_urls for " + xpath)
         urls = set()
 
@@ -61,8 +61,8 @@ class ChallengeFiveDT(SeleniumBaseTest):
             url = elem.get_attribute("href")
             print(url)
 
-            if str(url).startswith("http"):
-                print("started with http")
+            if str(url).startswith(url_prefix):
+                print("started with ", url_prefix)
                 print("adding: ", url, "to the set")
                 urls.add(str(url))
 
