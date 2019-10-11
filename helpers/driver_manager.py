@@ -11,11 +11,16 @@ class DriverManager():
         print('Getting driver')
         path = self.path
 
-        if not self._driver:
-            if path:
-                self._driver = webdriver.Chrome()
-            else:
-                self._driver = webdriver.Chrome(path)
+
+
+        if self._driver:
+            return self._driver
+
+        print(path)
+        if path:
+            self._driver = webdriver.Chrome(path)
+        else:
+            self._driver = webdriver.Chrome()
         return self._driver
 
     @driver.setter
