@@ -1,5 +1,5 @@
 import unittest
-from challenge_tests.basetest import BaseTest
+from challenge_tests.copart_base_test import *
 
 """
 Challenge 5 - If/Else/Switch
@@ -29,7 +29,7 @@ And any other types can be grouped into one of MISC.
 https://www.w3schools.com/python/python_conditions.asp
 """
 
-class ChallengeFive(BaseTest):
+class ChallengeFive(CopartBaseTest):
 
     def setUp(self):
         super().setUp()

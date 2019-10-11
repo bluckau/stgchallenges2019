@@ -1,5 +1,4 @@
-from challenge_tests.basetest import BaseTest
-from helpers.selenium_helpers import *
+from challenge_tests.copart_base_test import *
 
 """
 Challenge 3 - Loops:
@@ -36,7 +35,7 @@ NISSAN - https://www.copart.com/popular/make/nissan
 SUBARU - https://www.copart.com/popular/make/subaru
 """
 
-class ChallengeThree(BaseTest):
+class ChallengeThree(CopartBaseTest):
 
     def setUp(self):
         super().setUp()

@@ -1,6 +1,5 @@
-from challenge_tests.basetest import BaseTest
-from helpers.selenium_helpers import *
-
+import unittest
+from challenge_tests.copart_base_test import CopartBaseTest
 """
 Challenge 2 - Asserts:
 Many times, the general thought for an automation script is to go from point A to point B.  However, this doesn’t
@@ -33,13 +32,13 @@ https://www.youtube.com/watch?v=iw_NDJsLYt8
 
 """
 
-class ChallengeTwo(BaseTest):
+class ChallengeTwo(CopartBaseTest):
 
     def setUp(self):
         super().setUp()
 
     def tearDown(self):
-        super().tearDown
+        super().tearDown()
 
     def test_challenge_two(self):
 

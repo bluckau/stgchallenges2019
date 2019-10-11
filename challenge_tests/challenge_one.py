@@ -1,14 +1,13 @@
-from challenge_tests.basetest import BaseTest
 from helpers.selenium_helpers import *
+from helpers.selenium_base import *
 
-
-class ChallengeOne(unittest.TestCase, SeleniumHelper):
+class ChallengeOne(SeleniumBaseTest, SeleniumHelper):
 
     def setUp(self):
-        self.driver = webdriver.Chrome(R"c:\dev\webdrivers\chromedriver.exe")
+        super().setUp()
 
     def tearDown(self):
-        self.driver.close()
+        super().tearDown()
 
     def test_challenge_one(self):
         self.go_to("https://www.google.com/")
