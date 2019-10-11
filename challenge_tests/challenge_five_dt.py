@@ -45,7 +45,32 @@ class ChallengeFiveDT(SeleniumBaseTest):
         self._check_urls(xpath_prefix="//*[@id='footer']", url_prefix="https://www.doterra.com")
 
     def test_hw3(self):
-        pass
+        self.go_to("https://www.doterra.com/US/en/product-education-blends")
+
+        oils_to_check = []
+        oils = self.driver.find_elements_by_xpath('//div[@id="content"]//span[@class ="title"]')
+        for oil in oils:
+            oils_to_check.append(oil.text)
+
+        self.doterra = 0
+        self.digestzen = 0
+        self.misc = 0
+
+        self.total = len(oils_to_check)
+
+        for oil_string in oils_to_check:
+            if "doterra" in oil_string.lower():
+                self.doterra = self.doterra + 1
+            elif "digestzen" in oil_string.lower():
+                self.digestzen = self.digestzen + 1
+            else:
+                self.misc = self.misc + 1
+
+        print("doTERRA: ", self.doterra)
+        print("DigeztZen", self.digestzen)
+        print("MISC: ", self.misc)
+
+        self.assertEqual(self.total, self.doterra + self.digestzen + self.misc)
 
     def test_hw4(self):
         driver=DriverManager().driver
