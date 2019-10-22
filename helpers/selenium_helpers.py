@@ -2,10 +2,11 @@ import time
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
-TIMEOUT = 10
+TIMEOUT = 120
 
 class SeleniumHelper():
 
@@ -21,27 +22,34 @@ class SeleniumHelper():
         print("wait_clickable: {} with timeout {}".format(loc_str, timeout))
 
         locator = self.resolve(item, loc_str)
-        return WebDriverWait(self.driver, timeout).until(
-            EC.element_to_be_clickable(locator)
+        elem = WebDriverWait(self.driver, timeout).until(
+            EC.element_to_be_clickable(locator),
+                "Did not find clickable element {}".format(locator)
         )
+        self.add_loc_string_to_elem(elem, locator)
+        return elem
 
     def get_visible(self, item:str, loc_str:str = None, timeout:int=TIMEOUT):
-        print("wait_visible_id: {} with timeout {}".format(id, timeout))
-
         locator = self.resolve(item, loc_str )
+        print("get_visible: {}".format(locator))
         if isinstance(locator, WebElement):
-            return WebDriverWait(self.driver, timeout).until(
-                EC.visibility_of(locator)
+            elem = WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of(locator),
+                "Did not find visible element {}".format(locator)
             )
 
         else:
-            return WebDriverWait(self.driver, timeout).until(
-                EC.visibility_of_element_located(locator)
+            elem = WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(locator),
+                "Did not find visible element {}".format(locator)
             )
 
+        self.add_loc_string_to_elem(elem, locator)
+        return elem
 
     def get_present(self, item:str, loc_str:str = None, timeout:int=TIMEOUT):
         if isinstance(item, WebElement):
+            self.add_loc_string_to_elem(item, loc_str)
             return item
 
         locator = self.resolve(item, loc_str)
@@ -49,9 +57,16 @@ class SeleniumHelper():
         print("Locator: " + str(locator))
         print("wait_present: {} with timeout {}".format(locator, timeout))
         elem = WebDriverWait(self.driver, timeout).until(
-            EC.presence_of_element_located(locator)
+            EC.presence_of_element_located(locator),
+                "Did not find present element {}".format(locator)
         )
+        self.add_loc_string_to_elem(elem, locator)
         return elem
+
+    def add_loc_string_to_elem(self, elem, loc_string):
+        #for debugging purposes
+        if loc_string and (not hasattr(elem, "loc_string")):
+            setattr(elem, "loc_string", loc_string)
 
 
     def go(self, url):
@@ -63,7 +78,7 @@ class SeleniumHelper():
     def send(self, item, loc_str=None, text=None):
         if not text:
             raise InvalidArgumentException("text must be an object")
-        elem = self.get_clickable(item, loc_str)
+        elem = self.get_present(item, loc_str)
         elem.send_keys(str(text))
         return elem
 
@@ -77,9 +92,14 @@ class SeleniumHelper():
         elem.click()
         return elem
 
+    def hover(self, item, loc_str=None):
+        elem = self.get_present(item, loc_str)
+        action = ActionChains(self.driver)
+        action.move_to_element(elem).perform()
+
     def resolve(self, item=None, loc_str=None):
         if isinstance(item, WebElement):
-            setattr(item, "loc_str", loc_str)
+            self.add_loc_string_to_elem(item, loc_str)
             return item
 
         if item in [By.XPATH, By.ID, By.CLASS_NAME, By.CSS_SELECTOR, By.LINK_TEXT, By.NAME, By.PARTIAL_LINK_TEXT, By.TAG_NAME]:
@@ -96,7 +116,3 @@ class SeleniumHelper():
                 return (By.ID, loc_str)
             else:
                 return (By.ID, item)
-
-
-
-

@@ -28,10 +28,16 @@ class ChallengeSix(CopartBaseTest):
 
 
     def test_challenge_six(self):
+        """For this challenge, go to copart site"""
+        make="Nissan"
+        #model="skyline"
         copart = self.copart
 
-        self.copart.search_item("Porsche")
+        copart.search_item(make)
 
+        model="versa"
+        copart.filter_model(model)
+        self.assertTrue(copart.check_for_model(model))
 
 
 if __name__ == '__main__':

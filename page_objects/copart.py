@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from helpers.selenium_base import SeleniumHelper
+import time
+sleep = time.sleep
 
 TIMEOUT = 120
 
@@ -19,9 +19,28 @@ class Copart(SeleniumHelper):
         self.hit(button)
 
     def filter_model(self, model):
-        models_expand = '//li[@class="list-group-item"]//a[text()="Model"]'
-        self.hit(models_expand)
+        li="//li[@class='list-group-item' and descendant::*[text()='Model']]"
+        expand = li + "//a"
+        self.hit(expand)
 
+        sleep(1)
+        search_field = li + "//*[@placeholder='Search']"
+
+        self.hover('//*[text()="Filter Options"]')
+
+        search_field="//li[@class='list-group-item' and descendant::*[text()='Model']]//*[@placeholder='Search']"
+        self.send(By.XPATH, search_field, model)
+        checkbox_elem = self.driver.find_elements_by_xpath(li + "//input[@type='Checkbox']")
+        return len(checkbox_elem) > 1
+
+
+    def check_for_model(self, model):
+        li="//li[@class='list-group-item' and descendant::*[text()='Model']]"
+
+        #self.hover('//*[text()="Filter Options"]')
+
+        checkbox_elem = self.driver.find_elements_by_xpath(li + "//input[@type='checkbox']")
+        return len(checkbox_elem) > 1
 
     def select_per_page(self, num):
         select_xpath = '//label[contains(text(),"Show")]/select'
