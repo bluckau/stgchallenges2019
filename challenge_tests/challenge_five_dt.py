@@ -37,15 +37,15 @@ class ChallengeFiveDT(SeleniumBaseTest):
 
 
     def test_hw1(self):
-        self.go_to("https://www.doterra.com/US/en/using-essential-oils")
+        self.go("https://www.doterra.com/US/en/using-essential-oils")
         self._check_urls(xpath_prefix="//div[@id='content_body']", url_prefix="https://www.doterra.com")
 
     def test_hw2(self):
-        self.go_to("https://www.doterra.com/US/en/using-essential-oils")
+        self.go("https://www.doterra.com/US/en/using-essential-oils")
         self._check_urls(xpath_prefix="//*[@id='footer']", url_prefix="https://www.doterra.com")
 
     def test_hw3(self):
-        self.go_to("https://www.doterra.com/US/en/product-education-blends")
+        self.go("https://www.doterra.com/US/en/product-education-blends")
 
         oils_to_check = []
         oils = self.driver.find_elements_by_xpath('//div[@id="content"]//span[@class ="title"]')
@@ -100,14 +100,13 @@ class ChallengeFiveDT(SeleniumBaseTest):
             print(url)
 
             self.assertTrue(url_helpers.is_url_valid(url), "url returned bad return code")
-            self.go_to(url)
+            self.go(url)
             h123 = None
 
             try:
                 #interrim solution to wait for the page to load before checking for "cannot be loaded"
                 #(every doterra page has one of these.)
-                print('waiting xpath')
-                h123 = self.wait_present_xpath("//h1|//h2|//h3")
+                h123 = self.get_present("//h1|//h2|//h3")
             except Exception as e:
                 print("warn: " + str(e))
             print("h123 = ", h123)
@@ -116,8 +115,8 @@ class ChallengeFiveDT(SeleniumBaseTest):
             cannot = None
             text = None
             try:
-                cannot = self.wait_present_xpath("//*[contains(@class,'page-notFound')]", timeout=1)
-                #cannot = self.wait_present_xpath('//h1[contains(text(),"cannot be found"]', timeout=10)
+                cannot = self.get_present("//*[contains(@class,'page-notFound')]", timeout=1)
+                #cannot = self.get_present('//h1[contains(text(),"cannot be found"]', timeout=10)
                 text = cannot.text
             except Exception as e:
                 print(str(type(e)))

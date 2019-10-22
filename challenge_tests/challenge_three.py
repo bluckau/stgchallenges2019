@@ -1,4 +1,5 @@
 from challenge_tests.copart_base_test import *
+import unittest
 
 """
 Challenge 3 - Loops:

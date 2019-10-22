@@ -10,8 +10,8 @@ class ChallengeOne(SeleniumBaseTest, SeleniumHelper):
         super().tearDown()
 
     def test_challenge_one(self):
-        self.go_to("https://www.google.com/")
-        self.assertIn("Google", self.get_title())
+        self.go("https://www.google.com/")
+        self.assertIn("Google", self.title())
 
 
 if __name__ == '__main__':

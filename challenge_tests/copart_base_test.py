@@ -1,6 +1,6 @@
-from helpers.selenium_base import *
-
+from helpers.selenium_base import SeleniumBaseTest
 from page_objects.copart import *
+
 class CopartBaseTest(SeleniumBaseTest):
     def setUp(self):
         super().setUp()
